@@ -7,28 +7,28 @@ help: ## Show this help message
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-15s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 up: ## Start Kafka and all services
-	docker-compose up -d
+	docker compose up -d
 	@echo "Waiting for services to be ready..."
 	@sleep 10
 	@echo "Kafka is ready at localhost:9092"
 	@echo "Kafka UI available at http://localhost:8080"
 
 down: ## Stop all services
-	docker-compose down
+	docker compose down
 
 restart: down up ## Restart all services
 
 ps: ## Show running containers
-	docker-compose ps
+	docker compose ps
 
 logs: ## Show logs from all services
-	docker-compose logs -f
+	docker compose logs -f
 
 logs-kafka: ## Show Kafka logs
-	docker-compose logs -f kafka
+	docker compose logs -f kafka
 
 logs-zookeeper: ## Show Zookeeper logs
-	docker-compose logs -f zookeeper
+	docker compose logs -f zookeeper
 
 topics: ## List all topics
 	docker exec -it kafka kafka-topics --list --bootstrap-server localhost:9092
@@ -62,7 +62,7 @@ produce: ## Produce messages to a topic (usage: make produce TOPIC=api-usage-eve
 		--topic $(TOPIC)
 
 clean: down ## Remove all containers, volumes, and images
-	docker-compose down -v
+	docker compose down -v
 	@echo "All Kafka data has been removed"
 
 reset: clean up ## Reset Kafka (delete all data and restart)
