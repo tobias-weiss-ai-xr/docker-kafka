@@ -15,3 +15,11 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Compiled binaries
+event-generator
+*.exe
+
+# Go modules
+go.sum
+

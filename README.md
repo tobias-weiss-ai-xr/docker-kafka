@@ -7,7 +7,7 @@ Docker Compose setup for Apache Kafka with Zookeeper, including automatic topic 
 - **Kafka 7.4.0** - Latest Confluent Platform distribution
 - **Zookeeper** - Required for Kafka coordination
 - **Auto-created Topics** - PAL MCP API topics created on startup
-- **Kafka UI** - Web interface at http://localhost:8080
+- **Test Event Generators** - Scripts for generating test events
 - **Data Persistence** - Docker volumes for data retention
 - **Health Checks** - Ensures services are ready before use
 
@@ -18,7 +18,7 @@ Docker Compose setup for Apache Kafka with Zookeeper, including automatic topic 
 make up
 
 # Or with docker-compose directly
-docker-compose up -d
+docker compose up -d
 
 # Check status
 make ps
@@ -29,6 +29,37 @@ make logs
 # Stop services
 make down
 ```
+
+## Test Events
+
+Two event generator scripts are included for testing:
+
+### bulk-events.sh (Recommended)
+Generates 30 test events across all topics:
+```bash
+./bulk-events.sh
+```
+
+Features:
+- 30 events evenly distributed across 4 topics
+- Realistic event data with random values
+- Progress indicator with emoji status
+- Completes in ~15 seconds
+
+### generate-test-events.sh
+Continuous event generator:
+```bash
+./generate-test-events.sh
+```
+
+Features:
+- Generates events indefinitely (Ctrl+C to stop)
+- Random event types every 1-3 seconds
+- Includes all 4 event types
+- Press Ctrl+C to stop
+
+**Use with PAL MCP Dashboard**: Events appear in real-time at http://localhost:8081
+
 
 ## Services
 
@@ -41,13 +72,9 @@ make down
   - `session-events` (3 partitions)
   - `error-events` (3 partitions)
 
-### Kafka UI
-- **URL**: http://localhost:8080
-- **Features**: Browse topics, view messages, consumer lag monitoring
-
 ### Zookeeper
 - **Port**: 2181
-- **Admin Server**: Disabled (port conflict avoidance)
+- **Admin Server**: Disabled (to avoid port conflicts)
 
 ## Environment Variables
 
